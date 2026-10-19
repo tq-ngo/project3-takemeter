@@ -51,64 +51,87 @@ whether you hit them:
 
 ---
 
-## 1.
+## 1. Overall accuracy is at least 0.60 on the held-out test split, on every seed
 
-<!-- Your criterion. It must name a number. -->
+Overall accuracy ≥ **0.60** on `test_split.csv` for each of seeds 42, 7 and
+2024. Not the average: all three.
 
-
-
-**Why this target:**
-
-
-
----
-
-## 2.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
+**Why this target:** With four labels balanced near 25% each, both a random
+guesser and an always-guess-the-biggest-label guesser score about 0.25 to
+0.30. So 0.60 is more than double chance. It is the point where using
+TakeMeter to sort an r/nba thread gets 3 in 5 posts right, which is the
+lowest bar I'd call useful. I did not pick 0.75. The test split is only
+about 36 posts, so one seed's accuracy moves by about 0.03 per post. On top
+of that, `hot_take` vs `joke` depends on detecting sarcasm, which a small
+DistilBERT trained on about 170 posts will often miss.
 
 ---
 
-## 3.
+## 2. Every label clears its own F1 floor, on every seed
 
-<!-- Your criterion. -->
+Per-label F1 on the test split, on all three seeds:
+`analysis` ≥ **0.60**, `reaction` ≥ **0.50**, `hot_take` ≥ **0.45**,
+`joke` ≥ **0.40**.
 
-
-
-**Why this target:**
-
-
-
----
-
-## 4.
-
-<!-- Your criterion. -->
-
-
-
-**Why this target:**
-
-
+**Why this target:** The floors are deliberately unequal, and each one
+reflects how much surface signal that label has in r/nba text. `analysis`
+posts carry visible cues (numbers, player names, records like *"3 block
+titles in 3 seasons"*), so it gets the highest floor. `joke` gets the
+lowest. Puns like *"They call him AA. It's a 12 step program"* need world
+knowledge the model doesn't have, and every label will have only about 9
+test posts, so one miss moves F1 by roughly 0.1. Even 0.40 is well above
+the roughly 0.25 a guesser gets, so no label is allowed to be dead weight.
 
 ---
 
-## 5.
+## 3. No label is more than 35% or less than 20% of `labels.csv`
 
-<!-- Your criterion. -->
+In the final `labels.csv` (target 240 rows), every label's share is between
+**20%** and **35%**, so between 48 and 84 posts.
 
+**Why this target:** The brief's cap is 70%, but with four labels that
+would leave the other three sharing 30%. A model trained that way learns to
+guess the big label. The real pressure here is the floor. In my
+45-post reading sample, only about 1 in 8 r/nba comments was `analysis`.
+Collected at random, 240 rows would give about 30 analysis posts and only
+about 4 in the test split, too few to measure. A 20% floor (48 posts, about
+7 in test) forces me to oversample analysis on purpose from the 1,459-post
+pool.
 
+---
 
-**Why this target:**
+## 4. I agree with the staff labels on at least 80% of the 30 staff posts
 
+`agreement.py` reports an agreement rate of at least **0.80** (24 of 30)
+between my labels and staff's on `data/staff_posts.csv`, using staff's
+taxonomy.
 
+**Why this target:** Three of my four labels share names with the staff
+taxonomy. Its key rule ("a fact is `analysis` only if it is load-bearing,
+otherwise it is a `hot_take` with a statistic in it") is the same rule
+as my decision rule 2. So if I'm applying my own rules consistently, I
+should apply theirs well too. 80% allows six disagreements. That's room
+for the cases where my headline-isn't-evidence rule or my habit of
+splitting out `joke` pulls me away from staff, but not room for sloppy
+labeling. Below 0.80, the model's errors in criteria 1–2 could be my
+labels, not the model.
 
+---
+
+## 5. Confident predictions beat unsure ones by at least 0.15, on every seed
+
+In `results.json`, `accuracy_most_confident_third` minus
+`accuracy_least_confident_third` is at least **0.15** on each of the three
+seeds.
+
+**Why this target:** TakeMeter is only useful for triage if a high
+confidence score means "trust this." Then low-confidence posts, which I
+expect to be the sarcastic `hot_take`/`joke` ones, can go to a human. With
+about 36 test posts, each third has about 12 posts, so 0.15 means at least
+2 more correct answers in the confident third than in the unsure third.
+That's the smallest gap I'd trust as more than noise at this size. A gap
+near zero would mean the confidence score is decoration, which matters
+because the README would then have to say not to use it.
 ---
 
 <!-- ─────────────────────────────────────────────────────────────────────────

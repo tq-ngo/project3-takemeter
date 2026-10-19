@@ -39,140 +39,129 @@
 
 ## What This Does
 
-<!-- Your community, and what your classifier sorts posts into. Three or four
-     sentences. -->
-
-
+This classifier sorts public comments from `r/nba`, one of Reddit's largest sports communities, into four categories: `analysis`, `hot_take`, `reaction`, and `joke`. The community features a wide spectrum of text, ranging from rigorous statistical breakdowns of player efficiency to low-effort memes, trade hyperbole, and emotional outbursts during close games. TakeMeter filters signal from noise by distinguishing between arguments backed by load-bearing checkable facts, confident unsupported assertions, immediate emotional expressions, and pure punchlines.
 
 ---
 
 ## Label Taxonomy
 
-<!-- Each label: a one-sentence definition and two real examples from your
-     reading. Then your decision rule for the hardest boundary.
+### `analysis`
 
-     The decision rule is worth a point on its own and it's the thing most
-     people leave out. Every taxonomy has a hardest boundary. Name yours. -->
-
-### `label_one`
-
-**Definition:**
+**Definition:** Makes an argument about basketball or the league that is backed by a specific, checkable fact the writer brings (a stat, record, date, comparison, or quote), and that fact supports this specific conclusion. Restating the thread's own headline does not count.
 
 **Example 1:**
->
+> He has 3 block titles in 3 seasons, if he gets one more he'd be tied for the all time lead, with Kareem, Mark Eaton, and Marcus Camby. 3 block titles feels like it already puts you in elite all time conversations
 
 **Example 2:**
->
+> And then consider that Bill Russell is a top 5 all-time player despite being largely a non-factor on offense. He never once finished in the top 5 in pts/36 on his own team and his offensive and defensive advanced stats are as lopsided as Steve Nash's in the opposite direction.
 
-### `label_two`
+### `hot_take`
 
-**Definition:**
+**Definition:** Asserts a confident general claim about players, teams, or the league with no checkable support offered, including sarcasm that encodes a real opinion.
 
 **Example 1:**
->
+> He got DPOY because of the market change. That's it. Should have won it years before
 
 **Example 2:**
->
+> Winning in 2017 and not getting the love he thought he’d get broke his brain. He’s been chasing the love he got in OKC ever since
+
+### `reaction`
+
+**Definition:** Reports the writer's own immediate feeling about the clip, game, or news (awe, heartbreak, joy, disgust) rather than making a claim about the world.
+
+**Example 1:**
+> Yeah wow. The fact that most of us got a few of them is genuinely nuts. Bravo.
+
+**Example 2:**
+> I love rewatching jokic highlights and seeing where he makes his decisions, incredible stuff
+
+### `joke`
+
+**Definition:** Exists only for a punchline (such as a pun, bit, absurd image, or reference gag), with no sincere claim behind it.
+
+**Example 1:**
+> They call him AA. It's a 12 step program.
+
+**Example 2:**
+> Exactly what James Naismith envisioned basketball would be.
 
 ### The hardest boundary
 
-**Which two labels:**
+**Which two labels:** `hot_take` vs `joke`
 
 **The decision rule I used every time:**
-<!-- e.g. "If the post names a specific checkable fact, it's `analysis`, even
-     if the tone is heated." -->
-
-
+Strip the "lol", the emoji, and the sarcasm, then ask: *is there a sincere claim left that the writer would defend if challenged?* If yes, it is `hot_take`, however jokey it sounds. If what is left is only an absurd punchline or gag with no sincere claim, it is `joke`.
 
 ---
 
 ## The Dataset
 
-<!-- Where you collected from, how you labelled, your counts, and three hard
-     cases. -->
+**Where the posts came from:** Public comment threads on `r/nba` collected across 22 threads via Reddit's public RSS endpoints (top/hot feeds). Plain questions and purely personal anecdotes without basketball claims were excluded during curation.
 
-**Where the posts came from:**
-
-**How I labelled them:** <!-- Cold first? Pre-labelled with AI and corrected?
-Say so plainly — the disclosure is required, not penalised. -->
+**How I labelled them:** I labeled 20 posts completely cold first with no tools or AI assistance, marked as `cold` in the `note` column. For the remaining 220 posts, an AI tool was used to pre-label candidates against my written taxonomy, after which I personally read, verified, and corrected every single row before committing, marking them as `pre-labeled, checked`.
 
 **Counts per label:**
 
 | Label | Count | Share |
 |---|---|---|
-|  |  |  |
-|  |  |  |
-|  |  |  |
-| **Total** |  | 100% |
+| `analysis` | 60 | 25.0% |
+| `hot_take` | 60 | 25.0% |
+| `reaction` | 60 | 25.0% |
+| `joke` | 60 | 25.0% |
+| **Total** | 240 | 100% |
 
 **Three hard cases**
 
-<!-- Any post that made you pause: what it was, which two labels it could have
-     been, and what you chose. These are worth more than the easy 190. -->
-
 **1.**
-> *The post:*
+> *The post:* "Winning in 2017 and not getting the love he thought he’d get broke his brain. He’s been chasing the love he got in OKC ever since"
 >
-> *Could have been:*
+> *Could have been:* `analysis` vs `hot_take`
 >
-> *I chose, because:*
+> *I chose, because:* I chose `hot_take`. Although the post names a specific year ("2017"), deleting the date leaves the amateur psychological claim completely intact. The date is merely decorative context rather than load-bearing evidence for the conclusion.
 
 **2.**
-> *The post:*
+> *The post:* "Fuck it let’s just move all the NBA teams to the top 30 cities by population worldwide Say hello to the Tokyo Thunder and São Paulo 76ers"
 >
-> *Could have been:*
+> *Could have been:* `hot_take` vs `joke`
 >
-> *I chose, because:*
+> *I chose, because:* I chose `joke`. While it mocks expansion discussions, the author is not advocating or defending an actual league relocation to Tokyo and São Paulo; once the hyperbole is stripped away, it is purely an absurd parody punchline.
 
 **3.**
-> *The post:*
+> *The post:* "When he hurt his knee before the half in G1 I was truly heartbroken, my captain continued to play with a bum knee, a broken wrist and a bum ankle (thanks Wemby and Barnes)."
 >
-> *Could have been:*
+> *Could have been:* `reaction` vs `hot_take`
 >
-> *I chose, because:*
+> *I chose, because:* I chose `reaction`. Although the parenthetical assigns blame for injuries, the primary communicative purpose of the comment is reporting personal emotional grief ("truly heartbroken") and fan attachment ("my captain").
 
 ---
 
 ## The Training Run
 
-<!-- Your starting model, your settings, and anything you changed and why. -->
+**Base model:** `distilbert-base-uncased`
 
-**Base model:**
+**Settings:** 3 epochs, learning rate 2e-5, batch size 16, seed 42, max length 128 tokens.
 
-**Settings:** <!-- epochs, learning rate, batch size, seed -->
+**Anything I changed from the defaults, and why:** None. All training settings were kept at the starter defaults (3 epochs, lr 2e-5, batch 16, max_length 128, seed 42) to establish a standard fine-tuning baseline.
 
-**Anything I changed from the defaults, and why:**
-
-**Split sizes:** <!-- train / val / test, and per-label counts in the test
-split. If a label had fewer than about 8 in test, say so — it explains a lot
-of next unit's variance. -->
-
-
+**Split sizes:** 70/15/15 stratified split across 240 rows: train 168 (42 per label), validation 36 (9 per label), test 36 (9 per label). All four labels have 9 examples in the test split, clearing the 8-example threshold that causes erratic metric swings.
 
 ---
 
 ## How I Used AI
 
-<!-- Two specific moments — what you asked, what came back, what you changed.
-
-     ⚠️ Plus disclosure of any pre-labelling. If you had a model pre-label a
-     batch and then read and corrected every one, say that. It's an allowed
-     workflow and disclosing it costs you nothing. Not disclosing it is the
-     problem. -->
-
 **Moment 1**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* Prompted the AI with my initial label definitions and asked it to generate 8 border-case posts specifically designed to probe ambiguity between labels.
+- *What came back:* 8 realistic borderline comments (e.g., sarcasm encoding real critique, posts mixing emotion and claims, headline-restating facts).
+- *What I changed:* Found that 4 of the 8 posts failed to classify cleanly under my initial draft. I updated the taxonomy with a strict precedence hierarchy (`analysis` -> `hot_take` -> `reaction` -> `joke`), ruled that sarcasm encoding a real opinion is `hot_take`, clarified that restating a thread's headline is not `analysis`, and specified that facts must bear directly on the conclusion.
 
 **Moment 2**
 
-- *What I asked for:*
-- *What came back:*
-- *What I changed:*
+- *What I asked for:* Provided candidate comment batches along with the tightened definitions and asked the model to propose provisional labels to speed up initial sorting.
+- *What came back:* Initial batch label proposals, but the model frequently mistook sarcasm for `joke` and misclassified decorative numbers as `analysis`.
+- *What I changed:* Read and reviewed every single comment manually, overriding incorrect classifications (especially enforcing the hardest boundary rule between `hot_take` and `joke`) to ensure absolute consistency with the decision rules.
 
-**Pre-labelling disclosure:**
+**Pre-labelling disclosure:** 20 posts were labeled completely cold without any AI assistance (`cold`). The remaining 220 posts were pre-labeled with AI and each one was individually read, checked, and manually corrected before inclusion (`pre-labeled, checked`).
 
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
 

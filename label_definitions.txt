@@ -5,6 +5,7 @@
 #
 # Delete the examples below and put yours in.
 
-analysis: makes an argument backed by a specific, checkable fact
-hot_take: a confident claim with no support offered
-reaction: an immediate response to something that just happened
+analysis: makes an argument about basketball backed by a specific, checkable fact the writer brings, such as a stat, record, date, comparison, or quote, that supports the conclusion
+hot_take: asserts a confident general claim about players, teams, or the league with no checkable support, including sarcasm that encodes a real opinion
+reaction: reports the writer's own immediate feeling about the clip, game, or news rather than making a claim about the world
+joke: exists only for a punchline such as a pun, bit, absurd image, or reference gag, with no sincere claim behind it
