@@ -6,14 +6,14 @@ unit 5 **before** anything was trained.
 **All five are yours this time.** None are given. You've had two projects of
 practice.
 
-An acceptance criterion names a number. *"The model is accurate"* is an
-opinion. *"Every label has an F1 of at least 0.60 on the held-out set"* is a
+An acceptance criterion names a number. _"The model is accurate"_ is an
+opinion. _"Every label has an F1 of at least 0.60 on the held-out set"_ is a
 criterion.
 
 Under each, write a sentence or two on **why that number**. A reason that says
-something about your data or your taxonomy earns credit — *"I picked 0.60 F1
+something about your data or your taxonomy earns credit — _"I picked 0.60 F1
 for `reaction` because it's my smallest label and I only have about 50
-examples of it"*. A reason that could be attached to any project does not.
+examples of it"_. A reason that could be attached to any project does not.
 
 > Missing your own targets next unit costs you nothing. Setting a target so
 > easy you can't miss it does.
@@ -30,13 +30,13 @@ somewhere you'd honestly call useful.
 form to fill in — a criterion that fits none of them is fine if it names a
 number.
 
-| Area | A question it could answer |
-|---|---|
-| Overall accuracy | How often does it need to be right to be worth using? |
-| Per-label performance | Is one label allowed to be much worse than the others? |
-| Balance | How lopsided can your label counts get before it's a problem? |
-| Consistency | If someone else labelled the same posts, how often should you agree? |
-| Confidence | Should a confident prediction be right more often than an unsure one? |
+| Area                  | A question it could answer                                            |
+| --------------------- | --------------------------------------------------------------------- |
+| Overall accuracy      | How often does it need to be right to be worth using?                 |
+| Per-label performance | Is one label allowed to be much worse than the others?                |
+| Balance               | How lopsided can your label counts get before it's a problem?         |
+| Consistency           | If someone else labelled the same posts, how often should you agree?  |
+| Confidence            | Should a confident prediction be right more often than an unsure one? |
 
 Two things worth knowing before you pick numbers, because both will affect
 whether you hit them:
@@ -53,8 +53,7 @@ whether you hit them:
 
 ## 1. Overall accuracy is at least 0.60 on the held-out test split, on every seed
 
-Overall accuracy ≥ **0.60** on `test_split.csv` for each of seeds 42, 7 and
-2024. Not the average: all three.
+Overall accuracy $\ge 0.60$ on `test_split.csv` for each of seeds 42, 7 and 2024. Not the average: all three.
 
 **Why this target:** With four labels balanced near 25% each, both a random
 guesser and an always-guess-the-biggest-label guesser score about 0.25 to
@@ -70,14 +69,14 @@ DistilBERT trained on about 170 posts will often miss.
 ## 2. Every label clears its own F1 floor, on every seed
 
 Per-label F1 on the test split, on all three seeds:
-`analysis` ≥ **0.60**, `reaction` ≥ **0.50**, `hot_take` ≥ **0.45**,
-`joke` ≥ **0.40**.
+`analysis` $\ge 0.60$, `reaction` $\ge 0.50$, `hot_take` $\ge 0.45$,
+`joke` $\ge 0.40$.
 
 **Why this target:** The floors are deliberately unequal, and each one
 reflects how much surface signal that label has in r/nba text. `analysis`
-posts carry visible cues (numbers, player names, records like *"3 block
-titles in 3 seasons"*), so it gets the highest floor. `joke` gets the
-lowest. Puns like *"They call him AA. It's a 12 step program"* need world
+posts carry visible cues (numbers, player names, records like _"3 block
+titles in 3 seasons"_), so it gets the highest floor. `joke` gets the
+lowest. Puns like _"They call him AA. It's a 12 step program"_ need world
 knowledge the model doesn't have, and every label will have only about 9
 test posts, so one miss moves F1 by roughly 0.1. Even 0.40 is well above
 the roughly 0.25 a guesser gets, so no label is allowed to be dead weight.
@@ -87,7 +86,7 @@ the roughly 0.25 a guesser gets, so no label is allowed to be dead weight.
 ## 3. No label is more than 35% or less than 20% of `labels.csv`
 
 In the final `labels.csv` (target 240 rows), every label's share is between
-**20%** and **35%**, so between 48 and 84 posts.
+20% and 35%, so between 48 and 84 posts.
 
 **Why this target:** The brief's cap is 70%, but with four labels that
 would leave the other three sharing 30%. A model trained that way learns to
@@ -102,7 +101,7 @@ pool.
 
 ## 4. I agree with the staff labels on at least 80% of the 30 staff posts
 
-`agreement.py` reports an agreement rate of at least **0.80** (24 of 30)
+`agreement.py` reports an agreement rate of at least 0.80 (24/30)
 between my labels and staff's on `data/staff_posts.csv`, using staff's
 taxonomy.
 
@@ -121,7 +120,7 @@ labels, not the model.
 ## 5. Confident predictions beat unsure ones by at least 0.15, on every seed
 
 In `results.json`, `accuracy_most_confident_third` minus
-`accuracy_least_confident_third` is at least **0.15** on each of the three
+`accuracy_least_confident_third` is at least 0.15 on each of the three
 seeds.
 
 **Why this target:** TakeMeter is only useful for triage if a high
@@ -132,6 +131,7 @@ about 36 test posts, each third has about 12 posts, so 0.15 means at least
 That's the smallest gap I'd trust as more than noise at this size. A gap
 near zero would mean the confidence score is decoration, which matters
 because the README would then have to say not to use it.
+
 ---
 
 <!-- ─────────────────────────────────────────────────────────────────────────

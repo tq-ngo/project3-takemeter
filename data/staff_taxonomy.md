@@ -6,7 +6,7 @@ The 30 posts in `data/staff_posts.csv` come from the same fictional running
 forum as `data/practice_labels.csv`. Staff labelled them under the three
 definitions below.
 
-**Label the 30 posts under *these* definitions, not your own.** That is the
+**Label the 30 posts under these definitions, not your own.** That is the
 point of the exercise, and it is different from what you did in unit 5. Your
 own taxonomy was yours to design; this one is somebody else's to apply. What is
 being measured is whether you can take a written rule you did not write and
