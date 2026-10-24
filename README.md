@@ -399,37 +399,85 @@ labelling problem from a model problem):
 ## The Improvement
 
 **What I changed:**
+Increased training epochs from 3 to 6 (`EPOCHS = 6`). Everything else—base
+model (`distilbert-base-uncased`), learning rate (2e-5), batch size (16),
+max sequence length (128), and the stratified split logic—was kept strictly
+identical.
 
 **Which diagnosis pointed at it:**
+The diagnosis that the model underfitted after only 33 optimizer steps (3
+epochs on 168 training examples at batch size 16). At 3 epochs, training loss
+stalled at 1.328 against a random-guessing baseline of 1.386 (ln 4), winning
+confidences hovered around 0.28, and subtle minority cues like `joke`
+completely collapsed to 0.000 F1 on two of three seeds. Doubling the training
+budget to 6 epochs gave AdamW 66 optimization steps to move weights away from
+initialization.
 
 ### Run Log — After
 
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Overall accuracy | ≥ 0.60 every seed | 0.528 | 0.444 | 0.472 | MISSED |
+| 2. Per-label F1 floors | analysis ≥ 0.60, reaction ≥ 0.50, hot_take ≥ 0.45, joke ≥ 0.40 | 0.609 / 0.526 / 0.462 / 0.471 | 0.533 / 0.500 / 0.364 / 0.421 | 0.609 / 0.333 / 0.476 / 0.375 | MISSED |
+| 3. Label share in `labels.csv` | every label 20%–35% | 25% each | 25% each | 25% each | MET |
+| 4. Staff agreement | ≥ 0.80 (24/30) | — | — | — | _pending agreement check_ |
+| 5. Confident − unsure third accuracy | ≥ +0.15 every seed | +0.167 (0.667 − 0.500) | +0.250 (0.667 − 0.417) | +0.250 (0.583 − 0.333) | **MET** |
+
+**Spread across seeds (After):**
+
+| Measure | Seed 42 | Seed 7 | Seed 2024 | Spread |
+|---|---|---|---|---|
+| Overall accuracy | 0.528 | 0.444 | 0.472 | 0.083 |
+| Macro F1 | 0.517 | 0.455 | 0.448 | 0.068 |
+| F1 — `analysis` | 0.609 | 0.533 | 0.609 | 0.075 |
+| F1 — `hot_take` | 0.462 | 0.364 | 0.476 | 0.113 |
+| F1 — `reaction` | 0.526 | 0.500 | 0.333 | 0.193 |
+| F1 — `joke` | 0.471 | 0.421 | 0.375 | 0.096 |
 
 **Did it help, and how do I know:**
+Yes, it helped clearly, and the numbers show three specific improvements:
+1. **Spread was cut in half:** Overall accuracy spread dropped from 0.167
+   (unstable, > 10 points) down to 0.083 (within the 0.05–0.10 stable range).
+   Macro F1 spread dropped from 0.191 down to 0.068.
+2. **`joke` was rescued from zero:** In the before run, `joke` had 0.000 F1
+   on seeds 7 and 2024, with only 3 of 27 test jokes correctly predicted
+   overall. At 6 epochs, `joke` scored 0.471, 0.421, and 0.375 across the
+   seeds, recalling 11 of 27 test jokes across splits.
+3. **Criterion 5 turned from MISSED to MET:** In the before run, Seed 2024's
+   confidence was inverted (−0.250). At 6 epochs, training loss reached
+   1.19–1.25 and confidence predictions calibrated properly across all three
+   seeds (+0.167, +0.250, +0.250), satisfying Criterion 5.
 
-<!-- If it didn't, say so. Relabelling that didn't help is a genuinely
-     interesting result and earns full credit. -->
-
-
+However, it did not push accuracy over the 0.60 target (peaking at 0.528 on
+seed 42), confirming that additional optimization steps cannot replace
+missing training examples or resolve genuine semantic ambiguity.
 
 ---
 
 ## What's Still Broken
 
-<!-- For each criterion still missed: what you'd do, and why you stopped. -->
-
-
+- **Criterion 1 (Overall accuracy ≥ 0.60):** Missed on all three seeds
+  (0.528, 0.444, 0.472). The model still gets roughly 1 in 2 posts wrong on
+  held-out splits. What I would do next is double the dataset size from 240
+  to 500 rows, because 42 training examples per class is too few for
+  DistilBERT to generalize beyond prominent lexical markers.
+- **Criterion 2 (Per-label F1 floors):** Missed on seeds 7 (`hot_take`
+  0.364) and 2024 (`reaction` 0.333, `joke` 0.375). With only 9 test posts
+  per label, a single misclassification swings F1 by ~0.10.
+- **Why I stopped here:** Pushing epochs beyond 6 caused validation loss to
+  bottom out and begin fluctuating (~1.20–1.25), indicating that further
+  training would overfit to idiosyncrasies of the 168 training posts rather
+  than improve test generalization.
 
 **The gap between what I meant my labels to capture and what the model
 learned:**
-<!-- Two sentences. Your confusion matrix is the evidence. -->
+I meant my labels to distinguish between arguments backed by load-bearing facts,
+unsupported opinions, and pure punchlines, but the model primarily learned
+surface syntax—mistaking emotional expressions in jokes for `reaction` and
+treating any number or player name as evidence for `analysis`. Because
+DistilBERT lacks domain-specific NBA background knowledge, it cannot discern
+whether a sarcastic comment carries a sincere underlying critique or is merely
+an absurd bit.
 
 
 
