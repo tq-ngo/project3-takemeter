@@ -1,0 +1,220 @@
+{
+  "model": "facebook/bart-large-mnli",
+  "n": 36,
+  "seed": 42,
+  "held_out": true,
+  "used_definitions": true,
+  "scores": {
+    "n": 36,
+    "accuracy": 0.3333333333333333,
+    "f1_macro": 0.21793103448275863,
+    "per_label": {
+      "analysis": {
+        "precision": 0.4,
+        "recall": 0.8888888888888888,
+        "f1": 0.5517241379310346,
+        "support": 9
+      },
+      "hot_take": {
+        "precision": 0.25,
+        "recall": 0.4444444444444444,
+        "f1": 0.32,
+        "support": 9
+      },
+      "joke": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 9
+      },
+      "reaction": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 9
+      }
+    }
+  },
+  "predictions": [
+    {
+      "text": "If this was a bit, I love the dedication",
+      "gold": "reaction",
+      "predicted": "analysis"
+    },
+    {
+      "text": "I wish KG was calling games like the Manning bros.",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "He dropped 34 PPG last season, there wasn't anything wrong with his game then",
+      "gold": "analysis",
+      "predicted": "analysis"
+    },
+    {
+      "text": "I mean last season he was in pretty good shape too lol",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Had a hof career at all 3 stops lol, 2 hof careers on the cavs",
+      "gold": "analysis",
+      "predicted": "analysis"
+    },
+    {
+      "text": "To kill all spurs momentum too, wouldn\u2019t it have gone 2-2 if they lost and the spurs would not go down easy at 2-2. Lowkey won them the chip",
+      "gold": "analysis",
+      "predicted": "analysis"
+    },
+    {
+      "text": "95 percent of basketball fans here were already Knicks fans.",
+      "gold": "analysis",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Shaq Fu on the list of martial arts in The Matrix is one of my favorite easter eggs",
+      "gold": "joke",
+      "predicted": "analysis"
+    },
+    {
+      "text": "I believe it was the most clutch play of all time capping the greatest comeback of all time.",
+      "gold": "hot_take",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Wreck em tech idgaf about that rivalry And fuck ted",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "The Mexico City metro area has more people than the state of New York (25M to 20M)",
+      "gold": "analysis",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Closing out a team, especially in the finals is one of the hardest things to do. 45 from ur #1 while ur #2 scores 2 will do it.",
+      "gold": "analysis",
+      "predicted": "analysis"
+    },
+    {
+      "text": "He hasn't been fat since his first half season with us. He was thin starting that summer, then all last year and all and all this summer. He is definitely leaner this year. He has a lot more definition",
+      "gold": "hot_take",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Kevon redoes the portrait of Jordan palming 2 balls but he has 8 folding chairs hanging off each arm.",
+      "gold": "joke",
+      "predicted": "analysis"
+    },
+    {
+      "text": "The fans really are average at worst and for sure the org and players, you\u2019d be hard pressed to find any pro sports team today with guys who are as high character, family and community oriented",
+      "gold": "hot_take",
+      "predicted": "analysis"
+    },
+    {
+      "text": "I ain't in the same universe as you.",
+      "gold": "joke",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "His shot is so crazy. It's like 80% arms, which probably makes it really hard to defend because the rhythm is so different. I can't believe he's as accurate as he is from range",
+      "gold": "reaction",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Tatum would never say something that badass Turner would say something like that though",
+      "gold": "joke",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Crazy part is: This is only 22 y.o version of Wemby, and your take is barely mildly warm, at worst.",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "I struggle a lot believe a guy that would argue with a tree if it had a twitter account, and has groupchats with strangers ragging on his teammates, is that reserved in person.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "I understand I\u2019m just a white boy from Australia and LeBron\u2019s the goat, however Jalen Brunson was a 4th quarter Demi god all series. The team doesn\u2019t get to where they are without Brunson.",
+      "gold": "hot_take",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Reminded me of that copypasta Steps 1-5 clearly missed...",
+      "gold": "joke",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "I think people are also equating a couple week vacation experience vs. your entire life is based out of this location which are very different things.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "I completely missed The Onion part in title and thought it was legit until i got to Zion",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Idk who he is but I hate him",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "Someone tell KD he\u2019s not all that special",
+      "gold": "joke",
+      "predicted": "analysis"
+    },
+    {
+      "text": "The giant Wemby makes this at least 5x cooler",
+      "gold": "reaction",
+      "predicted": "analysis"
+    },
+    {
+      "text": "also Bill Simmons, pretending to be Bill Chisolm",
+      "gold": "joke",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Being a top-5 offensive threat in the league with a top-10 defense is better than a top-15 offense with the best defense.",
+      "gold": "hot_take",
+      "predicted": "analysis"
+    },
+    {
+      "text": "Until OG\u2019s tip, Ewing had the most important putback in Knicks history, when he dunked Starks\u2019 miss in the final moments of game 7 of the 1994 ECF, eliminating the Pacers and sending the Knicks to the Finals.",
+      "gold": "analysis",
+      "predicted": "analysis"
+    },
+    {
+      "text": "At least Giannis can make that in 2 strides usually lol",
+      "gold": "joke",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "It's infuriating and I'd like to know the answer to the question as well",
+      "gold": "reaction",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "it\u2019s like watching a college player playing ball with a bunch of 8th graders",
+      "gold": "joke",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "People acting like Mexico City is Bagdad\u2026 But the high elevation (2100ft higher than Denver) and visa stuff would be annoying for everyone. Seattle makes way more sense",
+      "gold": "analysis",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "This does nothing, people will still be able to do it. Perhaps the nba commissioner shouldn\u2019t have been a champion of sports betting to begin with.",
+      "gold": "hot_take",
+      "predicted": "hot_take"
+    },
+    {
+      "text": "And let's not forget, he averaged 30 minutes a game. In his career, Russell averaged 42 minutes a game.",
+      "gold": "analysis",
+      "predicted": "analysis"
+    }
+  ]
+}
