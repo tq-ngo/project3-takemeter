@@ -175,20 +175,53 @@ Strip the "lol", the emoji, and the sarcasm, then ask: *is there a sincere claim
 <!-- Both models on the same posts. `python baseline.py --trained results.json`
      prints this table for you. -->
 
+Baseline: `facebook/bart-large-mnli` zero-shot, prompted with `label_definitions.txt`.
+Trained: DistilBERT, seed 42 (`results.json`). Both scored on the same 36 posts in
+`test_split.csv` (9 per label).
+
 | Measure | Baseline | Trained | Difference |
 |---|---|---|---|
-| Overall accuracy |  |  |  |
-| Macro F1 |  |  |  |
-| F1 — `label_one` |  |  |  |
-| F1 — `label_two` |  |  |  |
+| Overall accuracy | 0.333 | 0.500 | +0.167 |
+| Macro F1 | 0.218 | 0.485 | +0.267 |
+| F1 — `analysis` | 0.552 | 0.667 | +0.115 |
+| F1 — `hot_take` | 0.320 | 0.400 | +0.080 |
+| F1 — `joke` | 0.000 | 0.375 | +0.375 |
+| F1 — `reaction` | 0.000 | 0.500 | +0.500 |
+
+**What the definitions were worth (same baseline, bare label names, no definitions):**
+
+| Measure | With definitions | Bare names | Difference |
+|---|---|---|---|
+| Overall accuracy | 0.333 | 0.361 | +0.028 |
+| Macro F1 | 0.218 | 0.311 | +0.093 |
+| F1 — `analysis` | 0.552 | 0.200 | −0.352 |
+| F1 — `hot_take` | 0.320 | 0.424 | +0.104 |
+| F1 — `joke` | 0.000 | 0.200 | +0.200 |
+| F1 — `reaction` | 0.000 | 0.421 | +0.421 |
+
+The baseline reported in the main table is the **definitions** run
+(`baseline_results.json`); the bare-names run is in
+`baseline_results_bare_names.json`.
 
 **What I predicted before I looked:**
-<!-- Milestone 1 asks you to write this BEFORE seeing the trained numbers. A
-     prediction made afterwards isn't one. -->
+<!-- TODO (author): Milestone 1 asks you to write this BEFORE seeing the trained
+     numbers. The trained numbers were already in results.json from unit 5, so
+     write honestly what you expected and when — don't backdate it. -->
 
 **What the gap actually means:**
-<!-- If the baseline matched your trained model, your fine-tuning added
-     nothing — and that is a real finding, not a failure. Say it plainly. -->
+Fine-tuning beat the zero-shot baseline on every label, by 0.267 macro F1 on
+this split. Almost all of that gain is on `reaction` and `joke`, where the
+baseline got zero. With my definitions it sent 20 of 36 posts to `analysis`
+and never once predicted `reaction` or `joke`. The definitions actually
+*hurt* the baseline overall. Bare label names scored higher on accuracy
+(0.361 vs 0.333) and macro F1 (0.311 vs 0.218). The definitions helped only
+`analysis`: words like "stat, record, date" pulled anything with a number or
+a name toward it. Two caveats keep this from being a clean win for
+fine-tuning. First, the comparison covers only seed 42's split. Second, on
+seeds 7 and 2024 the trained model scored 0.333 and 0.361 (see run log),
+which is no better than the baseline. So the honest finding is that on two
+of three splits, fine-tuning added nothing measurable over a zero-shot
+model.
 
 
 
@@ -199,29 +232,64 @@ Strip the "lol", the emoji, and the sarcasm, then ask: *is there a sincere claim
 <!-- Five criteria across three seeds. The notebook's section 6 prints the
      spread table; the Target and Verdict columns are yours. -->
 
+Device: Apple Silicon GPU (MPS), torch 2.14.1. Settings unchanged from unit 5:
+`distilbert-base-uncased`, 3 epochs, lr 2e-5, batch 16, max_length 128.
+Seed 42 reproduced the unit 5 `results.json` exactly (0.500 / 0.485).
+
 | Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
 |---|---|---|---|---|---|
-| 1.  |  |  |  |  |  |
-| 2.  |  |  |  |  |  |
-| 3.  |  |  |  |  |  |
-| 4.  |  |  |  |  |  |
-| 5.  |  |  |  |  |  |
+| 1. Overall accuracy | ≥ 0.60 every seed | 0.500 | 0.333 | 0.361 | MISSED |
+| 2. Per-label F1 floors | analysis ≥ 0.60, reaction ≥ 0.50, hot_take ≥ 0.45, joke ≥ 0.40 | 0.667 / 0.500 / 0.400 / 0.375 | 0.429 / 0.375 / 0.375 / 0.000 | 0.476 / 0.429 / 0.308 / 0.000 | MISSED |
+| 3. Label share in `labels.csv` | every label 20%–35% | 25% each | 25% each | 25% each | MET |
+| 4. Staff agreement | ≥ 0.80 (24/30) | — | — | — | _pending agreement check_ |
+| 5. Confident − unsure third accuracy | ≥ +0.15 every seed | +0.417 (0.583 − 0.167) | +0.250 (0.500 − 0.250) | −0.250 (0.250 − 0.500) | MISSED |
+
+Criterion 2 cells read analysis / reaction / hot_take / joke. Criteria 3
+and 4 are properties of the data, not of a seed, so they have one value.
+
+**Spread across seeds:**
+
+| Measure | Seed 42 | Seed 7 | Seed 2024 | Spread |
+|---|---|---|---|---|
+| Overall accuracy | 0.500 | 0.333 | 0.361 | 0.167 |
+| Macro F1 | 0.485 | 0.295 | 0.303 | 0.191 |
+| F1 — `analysis` | 0.667 | 0.429 | 0.476 | 0.238 |
+| F1 — `hot_take` | 0.400 | 0.375 | 0.308 | 0.092 |
+| F1 — `reaction` | 0.500 | 0.375 | 0.429 | 0.125 |
+| F1 — `joke` | 0.375 | 0.000 | 0.000 | 0.375 |
+
+Accuracy moved 16.7 points across seeds, past the 10-point line, so a single
+split is not a measurement here. Seed 42, the split my unit 5 result and the
+baseline comparison used, was the friendliest of the three.
 
 ### Confusion matrix
 
-<!-- ⚠️ TYPED AS A MARKDOWN TABLE. The notebook prints one ready to paste.
-     An image of a matrix earns nothing. -->
+Seed 42 (the notebook's section 7 output):
 
-| true \ predicted |  |  |  |
-|---|---|---|---|
-| **** |  |  |  |
-| **** |  |  |  |
-| **** |  |  |  |
+| true \ predicted | analysis | hot_take | reaction | joke |
+|---|---|---|---|---|
+| **analysis** | 7 | 1 | 1 | 0 |
+| **hot_take** | 4 | 3 | 1 | 1 |
+| **reaction** | 0 | 1 | 5 | 3 |
+| **joke** | 1 | 1 | 4 | 3 |
+
+Summed over all three seeds (108 test predictions):
+
+| true \ predicted | analysis | hot_take | reaction | joke |
+|---|---|---|---|---|
+| **analysis** | 15 | 9 | 3 | 0 |
+| **hot_take** | 6 | 11 | 9 | 1 |
+| **reaction** | 4 | 4 | 14 | 5 |
+| **joke** | 4 | 9 | 11 | 3 |
 
 **My biggest off-diagonal number, and what it means:**
-<!-- Not "the model made mistakes" — WHICH boundary it didn't learn, and which
-     direction. "7 real analysis posts were called hot_take and only 3 went the
-     other way" is a direction, not just an error rate. -->
+On seed 42 the biggest cell is 4 real `hot_take` posts called `analysis`,
+with only 1 going the other way. That direction doesn't survive the other
+seeds. Summed over all three, `analysis → hot_take` (9) outnumbers
+`hot_take → analysis` (6). The robust off-diagonal is **11 real `joke`
+posts called `reaction`**, plus 9 more called `hot_take`. Only 3 of 27
+jokes were recognised. The model never learned `joke` as a category; it
+splits jokes between the two labels they look most like on the surface.
 
 
 
@@ -234,11 +302,30 @@ Strip the "lol", the emoji, and the sarcasm, then ask: *is there a sincere claim
 
 | # | Criterion | Target | Verdict | How I decided |
 |---|---|---|---|---|
-| 1 |  |  |  |  |
-| 2 |  |  |  |  |
-| 3 |  |  |  |  |
-| 4 |  |  |  |  |
-| 5 |  |  |  |  |
+| 1 | Overall accuracy | ≥ 0.60 on every seed | MISSED | No seed reached it: 0.500, 0.333, 0.361 |
+| 2 | Per-label F1 floors | analysis 0.60 / reaction 0.50 / hot_take 0.45 / joke 0.40, every seed | MISSED | `hot_take` and `joke` miss on all three seeds; `joke` is 0.000 on two |
+| 3 | Label balance | 20%–35% each | MET | 60 / 240 = 25.0% for every label |
+| 4 | Staff agreement | ≥ 0.80 | _pending_ | Waiting on `agreement.py` |
+| 5 | Confidence gap | ≥ +0.15 every seed | MISSED | Seeds 42 and 7 pass (+0.417, +0.250); seed 2024 is reversed (−0.250) |
+
+**Evidence for the diagnoses, gathered so far** (diagnoses themselves are
+written after the agreement check, which is the evidence that separates a
+labelling problem from a model problem):
+
+- **The model barely moved off uniform guessing.** Final training loss was
+  1.328 / 1.353 / 1.346 across seeds, against 1.386 for a model that
+  assigns 25% to every label (ln 4). Mean winning-class confidence is
+  0.28 when right and 0.28 when wrong, where uniform is 0.25. Three epochs at
+  batch 16 on 168 posts is 33 optimiser steps in total.
+- That also explains criterion 5. When every prediction sits near 0.28,
+  ranking posts by confidence is nearly ranking them by noise, so the gap
+  flipping sign on one seed is what you'd expect.
+- `joke` recall is 3 / 27 summed, and its errors split between `reaction`
+  (11) and `hot_take` (9).
+
+<!-- TODO (author): after the agreement check, write each diagnosis: which
+     label, what caused it, and how you know, citing pile (a) disagreements
+     where they exist. -->
 
 **Diagnoses**
 
