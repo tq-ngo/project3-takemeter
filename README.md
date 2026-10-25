@@ -540,6 +540,7 @@ an absurd bit.
 ## Stretch
 
 This submission completes **all three stretch items** for extra credit:
+
 1. **A confidence check** — are the model's confident predictions right more often than its unsure ones across all three seeds and training regimes?
 2. **A second improvement, measured the same way** — testing learning rate optimization ($3\times 10^{-5}$ at 6 epochs) across all three random seeds with full side-by-side run logs and criteria verdicts.
 3. **A per-label error write-up for whichever label the matrix says is worst** — error diagnosis and failure mode analysis for `joke`.
@@ -548,26 +549,27 @@ This submission completes **all three stretch items** for extra credit:
 
 ### Stretch 1: Confidence Check
 
-| Seed | Run | Mean Conf (Right) | Mean Conf (Wrong) | Acc (Most Confident Third) | Acc (Least Confident Third) | Calibration Gap | Verdict |
-|---|---|---|---|---|---|---|---|
-| 42 | Before (3 epochs, lr 2e-5) | 0.288 | 0.278 | 0.583 (7/12) | 0.167 (2/12) | +0.417 | MET |
-| 7 | Before (3 epochs, lr 2e-5) | 0.280 | 0.273 | 0.500 (6/12) | 0.250 (3/12) | +0.250 | MET |
-| 2024 | Before (3 epochs, lr 2e-5) | 0.276 | 0.278 | 0.250 (3/12) | 0.500 (6/12) | −0.250 | MISSED |
-| **All (Before)** | **Average** | **0.281** | **0.276** | **0.444** | **0.306** | **+0.139** | **MISSED (1 of 3 failed)** |
-| 42 | Improvement 1 (6 epochs, lr 2e-5) | 0.382 | 0.349 | 0.667 (8/12) | 0.500 (6/12) | +0.167 | MET |
-| 7 | Improvement 1 (6 epochs, lr 2e-5) | 0.323 | 0.309 | 0.667 (8/12) | 0.417 (5/12) | +0.250 | MET |
-| 2024 | Improvement 1 (6 epochs, lr 2e-5) | 0.327 | 0.323 | 0.583 (7/12) | 0.333 (4/12) | +0.250 | MET |
-| **All (Imp 1)** | **Average** | **0.344** | **0.327** | **0.639** | **0.417** | **+0.222** | **MET (3 of 3 passed)** |
-| 42 | Improvement 2 (6 epochs, lr 3e-5) | 0.475 | 0.415 | 0.667 (8/12) | 0.417 (5/12) | +0.250 | MET |
-| 7 | Improvement 2 (6 epochs, lr 3e-5) | 0.399 | 0.367 | 0.583 (7/12) | 0.333 (4/12) | +0.250 | MET |
-| 2024 | Improvement 2 (6 epochs, lr 3e-5) | 0.383 | 0.398 | 0.667 (8/12) | 0.583 (7/12) | +0.083 | MET |
-| **All (Imp 2)** | **Average** | **0.419** | **0.393** | **0.639** | **0.444** | **+0.194** | **MET (3 of 3 passed)** |
+| Seed             | Run                               | Mean Conf (Right) | Mean Conf (Wrong) | Acc (Most Confident Third) | Acc (Least Confident Third) | Calibration Gap | Verdict                    |
+| ---------------- | --------------------------------- | ----------------- | ----------------- | -------------------------- | --------------------------- | --------------- | -------------------------- |
+| 42               | Before (3 epochs, lr 2e-5)        | 0.288             | 0.278             | 0.583 (7/12)               | 0.167 (2/12)                | +0.417          | MET                        |
+| 7                | Before (3 epochs, lr 2e-5)        | 0.280             | 0.273             | 0.500 (6/12)               | 0.250 (3/12)                | +0.250          | MET                        |
+| 2024             | Before (3 epochs, lr 2e-5)        | 0.276             | 0.278             | 0.250 (3/12)               | 0.500 (6/12)                | −0.250          | MISSED                     |
+| **All (Before)** | **Average**                       | **0.281**         | **0.276**         | **0.444**                  | **0.306**                   | **+0.139**      | **MISSED (1 of 3 failed)** |
+| 42               | Improvement 1 (6 epochs, lr 2e-5) | 0.382             | 0.349             | 0.667 (8/12)               | 0.500 (6/12)                | +0.167          | MET                        |
+| 7                | Improvement 1 (6 epochs, lr 2e-5) | 0.323             | 0.309             | 0.667 (8/12)               | 0.417 (5/12)                | +0.250          | MET                        |
+| 2024             | Improvement 1 (6 epochs, lr 2e-5) | 0.327             | 0.323             | 0.583 (7/12)               | 0.333 (4/12)                | +0.250          | MET                        |
+| **All (Imp 1)**  | **Average**                       | **0.344**         | **0.327**         | **0.639**                  | **0.417**                   | **+0.222**      | **MET (3 of 3 passed)**    |
+| 42               | Improvement 2 (6 epochs, lr 3e-5) | 0.475             | 0.415             | 0.667 (8/12)               | 0.417 (5/12)                | +0.250          | MET                        |
+| 7                | Improvement 2 (6 epochs, lr 3e-5) | 0.399             | 0.367             | 0.583 (7/12)               | 0.333 (4/12)                | +0.250          | MET                        |
+| 2024             | Improvement 2 (6 epochs, lr 3e-5) | 0.383             | 0.398             | 0.667 (8/12)               | 0.583 (7/12)                | +0.083          | MET                        |
+| **All (Imp 2)**  | **Average**                       | **0.419**         | **0.393**         | **0.639**                  | **0.444**                   | **+0.194**      | **MET (3 of 3 passed)**    |
 
 **Analysis:**
+
 1. **Are confident predictions right more often?**
-   - In the initial 3-epoch run: *Barely, and unreliably.* Mean winning probability when right was 0.281 vs 0.276 when wrong (a tiny 0.005 difference above 0.25 uniform guessing). While seeds 42 and 7 showed positive gaps (+0.417 and +0.250), Seed 2024 was completely inverted (−0.250), where the least-confident third was right twice as often as the most-confident third. Because the model was under-trained (only 33 optimizer steps), softmax probabilities reflected random initialization noise rather than true epistemic certainty.
-   - In the 6-epoch improvement run: *Yes, consistently.* Mean confidence increased to 0.344 when right vs 0.327 when wrong. Crucially, the most confident third beat the least confident third on every single seed (+0.167 on seed 42, +0.250 on seed 7, +0.250 on seed 2024), averaging 63.9% accuracy on confident guesses vs 41.7% on unsure guesses.
-   - In the second improvement run (6 epochs, lr $3\times 10^{-5}$): *Even stronger calibration and certainty.* Mean confidence when correct climbed substantially to 0.419 vs 0.393 when wrong. The top-confidence tertile remained high at 63.9% accuracy while beating the bottom tertile across all three seeds (+0.250 on seed 42, +0.250 on seed 7, +0.083 on seed 2024).
+   - In the initial 3-epoch run: _Barely, and unreliably._ Mean winning probability when right was 0.281 vs 0.276 when wrong (a tiny 0.005 difference above 0.25 uniform guessing). While seeds 42 and 7 showed positive gaps (+0.417 and +0.250), Seed 2024 was completely inverted (−0.250), where the least-confident third was right twice as often as the most-confident third. Because the model was under-trained (only 33 optimizer steps), softmax probabilities reflected random initialization noise rather than true epistemic certainty.
+   - In the 6-epoch improvement run: _Yes, consistently._ Mean confidence increased to 0.344 when right vs 0.327 when wrong. Crucially, the most confident third beat the least confident third on every single seed (+0.167 on seed 42, +0.250 on seed 7, +0.250 on seed 2024), averaging 63.9% accuracy on confident guesses vs 41.7% on unsure guesses.
+   - In the second improvement run (6 epochs, lr $3\times 10^{-5}$): _Even stronger calibration and certainty._ Mean confidence when correct climbed substantially to 0.419 vs 0.393 when wrong. The top-confidence tertile remained high at 63.9% accuracy while beating the bottom tertile across all three seeds (+0.250 on seed 42, +0.250 on seed 7, +0.083 on seed 2024).
 2. **What this means for deployment:**
    TakeMeter can be safely deployed with a triage threshold: comments where maximum softmax probability exceeds ~0.40 can be auto-classified with ~64% reliability, while low-confidence comments (< 0.35) should be routed to human review or filtered out as ambiguous fan banter.
 
@@ -584,38 +586,39 @@ For my second improvement, I tested **tuning the learning rate upward from $2\ti
 
 All three configurations were evaluated on the identical three random seeds (`42`, `7`, `2024`) with held-out splits of 36 posts. Raw data is committed in `results_three_seeds_improvement2.json`.
 
-| Criterion | Seed | Before (3 ep, lr 2e-5) | Improvement 1 (6 ep, lr 2e-5) | Improvement 2 (6 ep, lr 3e-5) | Verdict (Imp 2) |
-|---|---|---|---|---|---|
-| **C1: Overall Acc $\ge$ 0.60** | 42 | 0.500 | 0.528 | 0.583 | MISSED (0.583 vs 0.60) |
-| | 7 | 0.333 | 0.444 | 0.444 | MISSED (0.444 vs 0.60) |
-| | 2024 | 0.389 | 0.472 | **0.611** | **MET (0.611 $\ge$ 0.60)** |
-| | **Mean (Spread)** | **0.407 (0.167)** | **0.481 (0.083)** | **0.546 (0.167)** | **MISSED (1 of 3 met)** |
-| **C2: Macro F1** | 42 | 0.485 | 0.517 | **0.577** | — |
-| | 7 | 0.288 | 0.441 | **0.453** | — |
-| | 2024 | 0.288 | 0.453 | **0.610** | — |
-| | **Mean** | **0.354** | **0.470** | **0.547** | — |
-| **C2: Per-Label F1** | `analysis` | 0.667 / 0.500 / 0.400 | 0.609 / 0.500 / 0.533 | **0.737 / 0.533 / 0.588** | MET on all seeds ($\ge 0.50$) |
-| | `hot_take` | 0.400 / 0.308 / 0.353 | 0.462 / 0.364 / 0.571 | **0.471 / 0.364 / 0.600** | MISSED on 42 & 7 ($< 0.50$) |
-| | `reaction` | 0.500 / 0.353 / 0.400 | 0.526 / 0.471 / 0.333 | **0.600 / 0.471 / 0.615** | MET on 42 & 2024 ($\ge 0.50$) |
-| | `joke` | 0.375 / 0.000 / 0.000 | 0.471 / 0.421 / 0.375 | **0.500 / 0.444 / 0.636** | MET on all seeds ($\ge 0.40$) |
-| **C3: Class Balance** | All seeds | Max 25.0% | Max 25.0% | Max 25.0% | **MET (100%)** |
-| **C4: Staff Agreement** | Set of 30 | 26/30 (86.7%) | 26/30 (86.7%) | 26/30 (86.7%) | **MET ($\ge 80\%$)** |
-| **C5: Confidence Gap** | 42 | +0.417 | +0.167 | +0.250 | **MET ($> 0$)** |
-| | 7 | +0.250 | +0.250 | +0.250 | **MET ($> 0$)** |
-| | 2024 | −0.250 | +0.250 | +0.083 | **MET ($> 0$)** |
-| | **Verdict** | **MISSED (1 inverted)** | **MET (3 of 3)** | **MET (3 of 3)** | **MET (3 of 3 passed)** |
+| Criterion                      | Seed              | Before (3 ep, lr 2e-5)  | Improvement 1 (6 ep, lr 2e-5) | Improvement 2 (6 ep, lr 3e-5) | Verdict (Imp 2)               |
+| ------------------------------ | ----------------- | ----------------------- | ----------------------------- | ----------------------------- | ----------------------------- |
+| **C1: Overall Acc $\ge$ 0.60** | 42                | 0.500                   | 0.528                         | 0.583                         | MISSED (0.583 vs 0.60)        |
+|                                | 7                 | 0.333                   | 0.444                         | 0.444                         | MISSED (0.444 vs 0.60)        |
+|                                | 2024              | 0.389                   | 0.472                         | **0.611**                     | **MET (0.611 $\ge$ 0.60)**    |
+|                                | **Mean (Spread)** | **0.407 (0.167)**       | **0.481 (0.083)**             | **0.546 (0.167)**             | **MISSED (1 of 3 met)**       |
+| **C2: Macro F1**               | 42                | 0.485                   | 0.517                         | **0.577**                     | —                             |
+|                                | 7                 | 0.288                   | 0.441                         | **0.453**                     | —                             |
+|                                | 2024              | 0.288                   | 0.453                         | **0.610**                     | —                             |
+|                                | **Mean**          | **0.354**               | **0.470**                     | **0.547**                     | —                             |
+| **C2: Per-Label F1**           | `analysis`        | 0.667 / 0.500 / 0.400   | 0.609 / 0.500 / 0.533         | **0.737 / 0.533 / 0.588**     | MET on all seeds ($\ge 0.50$) |
+|                                | `hot_take`        | 0.400 / 0.308 / 0.353   | 0.462 / 0.364 / 0.571         | **0.471 / 0.364 / 0.600**     | MISSED on 42 & 7 ($< 0.50$)   |
+|                                | `reaction`        | 0.500 / 0.353 / 0.400   | 0.526 / 0.471 / 0.333         | **0.600 / 0.471 / 0.615**     | MET on 42 & 2024 ($\ge 0.50$) |
+|                                | `joke`            | 0.375 / 0.000 / 0.000   | 0.471 / 0.421 / 0.375         | **0.500 / 0.444 / 0.636**     | MET on all seeds ($\ge 0.40$) |
+| **C3: Class Balance**          | All seeds         | Max 25.0%               | Max 25.0%                     | Max 25.0%                     | **MET (100%)**                |
+| **C4: Staff Agreement**        | Set of 30         | 26/30 (86.7%)           | 26/30 (86.7%)                 | 26/30 (86.7%)                 | **MET ($\ge 80\%$)**          |
+| **C5: Confidence Gap**         | 42                | +0.417                  | +0.167                        | +0.250                        | **MET ($> 0$)**               |
+|                                | 7                 | +0.250                  | +0.250                        | +0.250                        | **MET ($> 0$)**               |
+|                                | 2024              | −0.250                  | +0.250                        | +0.083                        | **MET ($> 0$)**               |
+|                                | **Verdict**       | **MISSED (1 inverted)** | **MET (3 of 3)**              | **MET (3 of 3)**              | **MET (3 of 3 passed)**       |
 
 **Summed Confusion Matrix across All Three Seeds (Improvement 2 — 108 total test posts):**
 
 | true \ predicted | analysis | hot_take | reaction | joke |
-|---|---|---|---|---|
-| **analysis** | 16 | 9 | 0 | 2 |
-| **hot_take** | 4 | 14 | 4 | 5 |
-| **reaction** | 2 | 4 | 14 | 7 |
-| **joke** | 2 | 5 | 5 | 15 |
+| ---------------- | -------- | -------- | -------- | ---- |
+| **analysis**     | 16       | 9        | 0        | 2    |
+| **hot_take**     | 4        | 14       | 4        | 5    |
+| **reaction**     | 2        | 4        | 14       | 7    |
+| **joke**         | 2        | 5        | 5        | 15   |
 
 **Did the second improvement help?**
 **Yes, decisively.**
+
 1. **Accuracy and F1 both reached project highs:** Mean accuracy rose from 0.407 (Before) $\rightarrow$ 0.481 (Imp 1) $\rightarrow$ **0.546** (Imp 2), representing a cumulative gain of +13.9 percentage points. Macro F1 similarly surged from 0.354 $\rightarrow$ 0.470 $\rightarrow$ **0.547** (+19.3 points over baseline).
 2. **First criterion milestone hit:** On Seed 2024, the model achieved **0.611 accuracy** and met all four per-label F1 targets (`analysis` 0.588, `hot_take` 0.600, `reaction` 0.615, `joke` 0.636), formally satisfying Criterion 1 and Criterion 2 for the first time on any seed split.
 3. **Joke performance cemented:** `joke` F1 climbed to an average of **0.527** across all three seeds (0.500, 0.444, 0.636). In the summed confusion matrix, true jokes correctly classified reached **15 out of 27 (55.6%)**, a five-fold increase compared to the 3 out of 27 (11.1%) in the baseline run.
@@ -628,6 +631,7 @@ All three configurations were evaluated on the identical three random seeds (`42
 The confusion matrix identifies `joke` as the model's most historically volatile and difficult category. In the initial 3-epoch run, `joke` collapsed to **0.000 F1 on seeds 7 and 2024** (0.375 on seed 42), with only **3 of 27 test jokes correctly predicted** across all three seeds. While subsequent improvements rescued `joke` to 0.422 (Imp 1) and **0.527** (Imp 2), its failure patterns reveal fundamental linguistic limitations of general pre-trained transformers on sports forum banter.
 
 Summed across all 108 test predictions in the baseline run, true `joke` posts leaked into:
+
 - `reaction`: 11 posts (40.7%)
 - `hot_take`: 9 posts (33.3%)
 - `analysis`: 4 posts (14.8%)
@@ -636,16 +640,16 @@ Summed across all 108 test predictions in the baseline run, true `joke` posts le
 **Why the model fails on `joke`:**
 
 1. **Failure Mode 1: The "Absurdity vs Emotion" confusion (`joke` $\rightarrow$ `reaction`, 11 misses)**
-   - *Example:* `"I got half right. I know 50% ball. Half a ball sack"` and `"I’m sure you’ve got every rotation of that thing memorized lmao"`
-   - *Root cause:* The model associates exclamations, self-deprecation, and informal punctuation ("lmao", "lol", emoji) with immediate emotional expressions (`reaction`). In `r/nba`, humor is frequently delivered through reactive cadences. Without world knowledge, DistilBERT cannot distinguish between a fan expressing authentic relief/disgust and a fan crafting a deliberate punchline.
+   - _Example:_ `"I got half right. I know 50% ball. Half a ball sack"` and `"I’m sure you’ve got every rotation of that thing memorized lmao"`
+   - _Root cause:_ The model associates exclamations, self-deprecation, and informal punctuation ("lmao", "lol", emoji) with immediate emotional expressions (`reaction`). In `r/nba`, humor is frequently delivered through reactive cadences. Without world knowledge, DistilBERT cannot distinguish between a fan expressing authentic relief/disgust and a fan crafting a deliberate punchline.
 
 2. **Failure Mode 2: Deadpan sarcasm misread as serious claims (`joke` $\rightarrow$ `hot_take`, 9 misses)**
-   - *Example:* `"Someone tell KD he’s not all that special"` and `"A lot of business decisions being made there."`
-   - *Root cause:* In sports culture, deadpan mockery often adopts the grammatical form of an imperative or declarative judgment. A human reader recognizes the hyperbole and context, but the transformer reads an unsubstantiated general claim and assigns it to `hot_take`.
+   - _Example:_ `"Someone tell KD he’s not all that special"` and `"A lot of business decisions being made there."`
+   - _Root cause:_ In sports culture, deadpan mockery often adopts the grammatical form of an imperative or declarative judgment. A human reader recognizes the hyperbole and context, but the transformer reads an unsubstantiated general claim and assigns it to `hot_take`.
 
 3. **Failure Mode 3: Parody facts misread as evidence (`joke` $\rightarrow$ `analysis`, 4 misses)**
-   - *Example:* `"Why the hell are people still driving cars after Mary Ward died in 1869? Have some sense people."` and `"At least Giannis can make that in 2 strides usually lol"`
-   - *Root cause:* When a joke incorporates a checkable historical date ("1869") or a player stat ("Giannis", "2 strides"), DistilBERT's attention heads strongly activate on the numerical tokens and predict `analysis`. The model cannot distinguish between a load-bearing basketball stat and an absurd parody analogy.
+   - _Example:_ `"Why the hell are people still driving cars after Mary Ward died in 1869? Have some sense people."` and `"At least Giannis can make that in 2 strides usually lol"`
+   - _Root cause:_ When a joke incorporates a checkable historical date ("1869") or a player stat ("Giannis", "2 strides"), DistilBERT's attention heads strongly activate on the numerical tokens and predict `analysis`. The model cannot distinguish between a load-bearing basketball stat and an absurd parody analogy.
 
 <!-- ═════════════════════════════════════════════════════════════════════
 
