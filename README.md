@@ -172,12 +172,6 @@ Strip the "lol", the emoji, and the sarcasm, then ask: _is there a sincere claim
 - _What came back:_ Initial batch label proposals, but the model frequently mistook sarcasm for `joke` and misclassified decorative numbers as `analysis`.
 - _What I changed:_ Read and reviewed every single comment manually, overriding incorrect classifications (especially enforcing the hardest boundary rule between `hot_take` and `joke`) to ensure absolute consistency with the decision rules.
 
-**Moment 3 (Unit 6)**
-
-- _What I asked for:_ Asked the model to analyze the multi-seed confusion matrix spread and the 4 staff disagreement cases to synthesize error patterns and diagnose root causes.
-- _What came back:_ The model pointed out that final training loss (1.33) barely dropped below random guessing entropy (1.386) after only 33 optimizer steps, and highlighted that the symmetric collapse of `joke` (only 3 of 27 test jokes recalled) indicated an under-trained representation space rather than pure labeling inconsistency. It suggested testing an increase to 6 training epochs as an isolated intervention.
-- _What I changed:_ Implemented the 6-epoch retraining across all three seeds, which cut accuracy spread in half (0.167 down to 0.083), rescued `joke` F1 from 0.000 to 0.421, and turned Criterion 5 from MISSED to MET. I also correlated my Pile (a) staff disagreements with the confusion matrix to diagnose how my own loose application of Rule 1 on personal training logs contributed to the 9 real `analysis` posts leaking into `hot_take`.
-
 **Pre-labelling disclosure:** 20 posts were labeled completely cold without any AI assistance (`cold`). The remaining 220 posts were pre-labeled with AI and each one was individually read, checked, and manually corrected before inclusion (`pre-labeled, checked`).
 
 <!-- ═══════════════════════ UNIT 6 — THE TEST ═══════════════════════
@@ -532,6 +526,16 @@ treating any number or player name as evidence for `analysis`. Because
 DistilBERT lacks domain-specific NBA background knowledge, it cannot discern
 whether a sarcastic comment carries a sincere underlying critique or is merely
 an absurd bit.
+
+---
+
+## How I Used AI (Unit 6)
+
+**Moment 3**
+
+- _What I asked for:_ Asked the model to analyze the multi-seed confusion matrix spread and the 4 staff disagreement cases to synthesize error patterns and diagnose root causes.
+- _What came back:_ The model pointed out that final training loss (1.33) barely dropped below random guessing entropy (1.386) after only 33 optimizer steps, and highlighted that the symmetric collapse of `joke` (only 3 of 27 test jokes recalled) indicated an under-trained representation space rather than pure labeling inconsistency. It suggested testing an increase to 6 training epochs as an isolated intervention.
+- _What I changed:_ Implemented the 6-epoch retraining across all three seeds, which cut accuracy spread in half (0.167 down to 0.083), rescued `joke` F1 from 0.000 to 0.421, and turned Criterion 5 from MISSED to MET. I also correlated my Pile (a) staff disagreements with the confusion matrix to diagnose how my own loose application of Rule 1 on personal training logs contributed to the 9 real `analysis` posts leaking into `hot_take`.
 
 <!-- ═════════════════════════════════════════════════════════════════════
 
