@@ -50,9 +50,11 @@ This classifier sorts public comments from `r/nba`, one of Reddit's largest spor
 **Definition:** Makes an argument about basketball or the league that is backed by a specific, checkable fact the writer brings (a stat, record, date, comparison, or quote), and that fact supports this specific conclusion. Restating the thread's own headline does not count.
 
 **Example 1:**
+
 > He has 3 block titles in 3 seasons, if he gets one more he'd be tied for the all time lead, with Kareem, Mark Eaton, and Marcus Camby. 3 block titles feels like it already puts you in elite all time conversations
 
 **Example 2:**
+
 > And then consider that Bill Russell is a top 5 all-time player despite being largely a non-factor on offense. He never once finished in the top 5 in pts/36 on his own team and his offensive and defensive advanced stats are as lopsided as Steve Nash's in the opposite direction.
 
 ### `hot_take`
@@ -60,9 +62,11 @@ This classifier sorts public comments from `r/nba`, one of Reddit's largest spor
 **Definition:** Asserts a confident general claim about players, teams, or the league with no checkable support offered, including sarcasm that encodes a real opinion.
 
 **Example 1:**
+
 > He got DPOY because of the market change. That's it. Should have won it years before
 
 **Example 2:**
+
 > Winning in 2017 and not getting the love he thought he’d get broke his brain. He’s been chasing the love he got in OKC ever since
 
 ### `reaction`
@@ -70,9 +74,11 @@ This classifier sorts public comments from `r/nba`, one of Reddit's largest spor
 **Definition:** Reports the writer's own immediate feeling about the clip, game, or news (awe, heartbreak, joy, disgust) rather than making a claim about the world.
 
 **Example 1:**
+
 > Yeah wow. The fact that most of us got a few of them is genuinely nuts. Bravo.
 
 **Example 2:**
+
 > I love rewatching jokic highlights and seeing where he makes his decisions, incredible stuff
 
 ### `joke`
@@ -80,9 +86,11 @@ This classifier sorts public comments from `r/nba`, one of Reddit's largest spor
 **Definition:** Exists only for a punchline (such as a pun, bit, absurd image, or reference gag), with no sincere claim behind it.
 
 **Example 1:**
+
 > They call him AA. It's a 12 step program.
 
 **Example 2:**
+
 > Exactly what James Naismith envisioned basketball would be.
 
 ### The hardest boundary
@@ -90,7 +98,7 @@ This classifier sorts public comments from `r/nba`, one of Reddit's largest spor
 **Which two labels:** `hot_take` vs `joke`
 
 **The decision rule I used every time:**
-Strip the "lol", the emoji, and the sarcasm, then ask: *is there a sincere claim left that the writer would defend if challenged?* If yes, it is `hot_take`, however jokey it sounds. If what is left is only an absurd punchline or gag with no sincere claim, it is `joke`.
+Strip the "lol", the emoji, and the sarcasm, then ask: _is there a sincere claim left that the writer would defend if challenged?_ If yes, it is `hot_take`, however jokey it sounds. If what is left is only an absurd punchline or gag with no sincere claim, it is `joke`.
 
 ---
 
@@ -102,36 +110,39 @@ Strip the "lol", the emoji, and the sarcasm, then ask: *is there a sincere claim
 
 **Counts per label:**
 
-| Label | Count | Share |
-|---|---|---|
-| `analysis` | 60 | 25.0% |
-| `hot_take` | 60 | 25.0% |
-| `reaction` | 60 | 25.0% |
-| `joke` | 60 | 25.0% |
-| **Total** | 240 | 100% |
+| Label      | Count | Share |
+| ---------- | ----- | ----- |
+| `analysis` | 60    | 25.0% |
+| `hot_take` | 60    | 25.0% |
+| `reaction` | 60    | 25.0% |
+| `joke`     | 60    | 25.0% |
+| **Total**  | 240   | 100%  |
 
 **Three hard cases**
 
 **1.**
-> *The post:* "Winning in 2017 and not getting the love he thought he’d get broke his brain. He’s been chasing the love he got in OKC ever since"
+
+> _The post:_ "Winning in 2017 and not getting the love he thought he’d get broke his brain. He’s been chasing the love he got in OKC ever since"
 >
-> *Could have been:* `analysis` vs `hot_take`
+> _Could have been:_ `analysis` vs `hot_take`
 >
-> *I chose, because:* I chose `hot_take`. Although the post names a specific year ("2017"), deleting the date leaves the amateur psychological claim completely intact. The date is merely decorative context rather than load-bearing evidence for the conclusion.
+> _I chose, because:_ I chose `hot_take`. Although the post names a specific year ("2017"), deleting the date leaves the amateur psychological claim completely intact. The date is merely decorative context rather than load-bearing evidence for the conclusion.
 
 **2.**
-> *The post:* "Fuck it let’s just move all the NBA teams to the top 30 cities by population worldwide Say hello to the Tokyo Thunder and São Paulo 76ers"
+
+> _The post:_ "Fuck it let’s just move all the NBA teams to the top 30 cities by population worldwide Say hello to the Tokyo Thunder and São Paulo 76ers"
 >
-> *Could have been:* `hot_take` vs `joke`
+> _Could have been:_ `hot_take` vs `joke`
 >
-> *I chose, because:* I chose `joke`. While it mocks expansion discussions, the author is not advocating or defending an actual league relocation to Tokyo and São Paulo; once the hyperbole is stripped away, it is purely an absurd parody punchline.
+> _I chose, because:_ I chose `joke`. While it mocks expansion discussions, the author is not advocating or defending an actual league relocation to Tokyo and São Paulo; once the hyperbole is stripped away, it is purely an absurd parody punchline.
 
 **3.**
-> *The post:* "When he hurt his knee before the half in G1 I was truly heartbroken, my captain continued to play with a bum knee, a broken wrist and a bum ankle (thanks Wemby and Barnes)."
+
+> _The post:_ "When he hurt his knee before the half in G1 I was truly heartbroken, my captain continued to play with a bum knee, a broken wrist and a bum ankle (thanks Wemby and Barnes)."
 >
-> *Could have been:* `reaction` vs `hot_take`
+> _Could have been:_ `reaction` vs `hot_take`
 >
-> *I chose, because:* I chose `reaction`. Although the parenthetical assigns blame for injuries, the primary communicative purpose of the comment is reporting personal emotional grief ("truly heartbroken") and fan attachment ("my captain").
+> _I chose, because:_ I chose `reaction`. Although the parenthetical assigns blame for injuries, the primary communicative purpose of the comment is reporting personal emotional grief ("truly heartbroken") and fan attachment ("my captain").
 
 ---
 
@@ -151,15 +162,21 @@ Strip the "lol", the emoji, and the sarcasm, then ask: *is there a sincere claim
 
 **Moment 1**
 
-- *What I asked for:* Prompted the AI with my initial label definitions and asked it to generate 8 border-case posts specifically designed to probe ambiguity between labels.
-- *What came back:* 8 realistic borderline comments (e.g., sarcasm encoding real critique, posts mixing emotion and claims, headline-restating facts).
-- *What I changed:* Found that 4 of the 8 posts failed to classify cleanly under my initial draft. I updated the taxonomy with a strict precedence hierarchy (`analysis` -> `hot_take` -> `reaction` -> `joke`), ruled that sarcasm encoding a real opinion is `hot_take`, clarified that restating a thread's headline is not `analysis`, and specified that facts must bear directly on the conclusion.
+- _What I asked for:_ Prompted the AI with my initial label definitions and asked it to generate 8 border-case posts specifically designed to probe ambiguity between labels.
+- _What came back:_ 8 realistic borderline comments (e.g., sarcasm encoding real critique, posts mixing emotion and claims, headline-restating facts).
+- _What I changed:_ Found that 4 of the 8 posts failed to classify cleanly under my initial draft. I updated the taxonomy with a strict precedence hierarchy (`analysis` -> `hot_take` -> `reaction` -> `joke`), ruled that sarcasm encoding a real opinion is `hot_take`, clarified that restating a thread's headline is not `analysis`, and specified that facts must bear directly on the conclusion.
 
 **Moment 2**
 
-- *What I asked for:* Provided candidate comment batches along with the tightened definitions and asked the model to propose provisional labels to speed up initial sorting.
-- *What came back:* Initial batch label proposals, but the model frequently mistook sarcasm for `joke` and misclassified decorative numbers as `analysis`.
-- *What I changed:* Read and reviewed every single comment manually, overriding incorrect classifications (especially enforcing the hardest boundary rule between `hot_take` and `joke`) to ensure absolute consistency with the decision rules.
+- _What I asked for:_ Provided candidate comment batches along with the tightened definitions and asked the model to propose provisional labels to speed up initial sorting.
+- _What came back:_ Initial batch label proposals, but the model frequently mistook sarcasm for `joke` and misclassified decorative numbers as `analysis`.
+- _What I changed:_ Read and reviewed every single comment manually, overriding incorrect classifications (especially enforcing the hardest boundary rule between `hot_take` and `joke`) to ensure absolute consistency with the decision rules.
+
+**Moment 3 (Unit 6)**
+
+- _What I asked for:_ Asked the model to analyze the multi-seed confusion matrix spread and the 4 staff disagreement cases to synthesize error patterns and diagnose root causes.
+- _What came back:_ The model pointed out that final training loss (1.33) barely dropped below random guessing entropy (1.386) after only 33 optimizer steps, and highlighted that the symmetric collapse of `joke` (only 3 of 27 test jokes recalled) indicated an under-trained representation space rather than pure labeling inconsistency. It suggested testing an increase to 6 training epochs as an isolated intervention.
+- _What I changed:_ Implemented the 6-epoch retraining across all three seeds, which cut accuracy spread in half (0.167 down to 0.083), rescued `joke` F1 from 0.000 to 0.421, and turned Criterion 5 from MISSED to MET. I also correlated my Pile (a) staff disagreements with the confusion matrix to diagnose how my own loose application of Rule 1 on personal training logs contributed to the 9 real `analysis` posts leaking into `hot_take`.
 
 **Pre-labelling disclosure:** 20 posts were labeled completely cold without any AI assistance (`cold`). The remaining 220 posts were pre-labeled with AI and each one was individually read, checked, and manually corrected before inclusion (`pre-labeled, checked`).
 
@@ -179,25 +196,25 @@ Baseline: `facebook/bart-large-mnli` zero-shot, prompted with `label_definitions
 Trained: DistilBERT, seed 42 (`results.json`). Both scored on the same 36 posts in
 `test_split.csv` (9 per label).
 
-| Measure | Baseline | Trained | Difference |
-|---|---|---|---|
-| Overall accuracy | 0.333 | 0.500 | +0.167 |
-| Macro F1 | 0.218 | 0.485 | +0.267 |
-| F1 — `analysis` | 0.552 | 0.667 | +0.115 |
-| F1 — `hot_take` | 0.320 | 0.400 | +0.080 |
-| F1 — `joke` | 0.000 | 0.375 | +0.375 |
-| F1 — `reaction` | 0.000 | 0.500 | +0.500 |
+| Measure          | Baseline | Trained | Difference |
+| ---------------- | -------- | ------- | ---------- |
+| Overall accuracy | 0.333    | 0.500   | +0.167     |
+| Macro F1         | 0.218    | 0.485   | +0.267     |
+| F1 — `analysis`  | 0.552    | 0.667   | +0.115     |
+| F1 — `hot_take`  | 0.320    | 0.400   | +0.080     |
+| F1 — `joke`      | 0.000    | 0.375   | +0.375     |
+| F1 — `reaction`  | 0.000    | 0.500   | +0.500     |
 
 **What the definitions were worth (same baseline, bare label names, no definitions):**
 
-| Measure | With definitions | Bare names | Difference |
-|---|---|---|---|
-| Overall accuracy | 0.333 | 0.361 | +0.028 |
-| Macro F1 | 0.218 | 0.311 | +0.093 |
-| F1 — `analysis` | 0.552 | 0.200 | −0.352 |
-| F1 — `hot_take` | 0.320 | 0.424 | +0.104 |
-| F1 — `joke` | 0.000 | 0.200 | +0.200 |
-| F1 — `reaction` | 0.000 | 0.421 | +0.421 |
+| Measure          | With definitions | Bare names | Difference |
+| ---------------- | ---------------- | ---------- | ---------- |
+| Overall accuracy | 0.333            | 0.361      | +0.028     |
+| Macro F1         | 0.218            | 0.311      | +0.093     |
+| F1 — `analysis`  | 0.552            | 0.200      | −0.352     |
+| F1 — `hot_take`  | 0.320            | 0.424      | +0.104     |
+| F1 — `joke`      | 0.000            | 0.200      | +0.200     |
+| F1 — `reaction`  | 0.000            | 0.421      | +0.421     |
 
 The baseline reported in the main table is the **definitions** run
 (`baseline_results.json`); the bare-names run is in
@@ -216,7 +233,7 @@ Fine-tuning beat the zero-shot baseline on every label, by 0.267 macro F1 on
 this split. Almost all of that gain is on `reaction` and `joke`, where the
 baseline got zero. With my definitions it sent 20 of 36 posts to `analysis`
 and never once predicted `reaction` or `joke`. The definitions actually
-*hurt* the baseline overall. Bare label names scored higher on accuracy
+_hurt_ the baseline overall. Bare label names scored higher on accuracy
 (0.361 vs 0.333) and macro F1 (0.311 vs 0.218). The definitions helped only
 `analysis`: words like "stat, record, date" pulled anything with a number or
 a name toward it. Two caveats keep this from being a clean win for
@@ -225,8 +242,6 @@ seeds 7 and 2024 the trained model scored 0.333 and 0.361 (see run log),
 which is no better than the baseline. So the honest finding is that on two
 of three splits, fine-tuning added nothing measurable over a zero-shot
 model.
-
-
 
 ---
 
@@ -239,27 +254,27 @@ Device: Apple Silicon GPU (MPS), torch 2.14.1. Settings unchanged from unit 5:
 `distilbert-base-uncased`, 3 epochs, lr 2e-5, batch 16, max_length 128.
 Seed 42 reproduced the unit 5 `results.json` exactly (0.500 / 0.485).
 
-| Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
-|---|---|---|---|---|---|
-| 1. Overall accuracy | ≥ 0.60 every seed | 0.500 | 0.333 | 0.361 | MISSED |
-| 2. Per-label F1 floors | analysis ≥ 0.60, reaction ≥ 0.50, hot_take ≥ 0.45, joke ≥ 0.40 | 0.667 / 0.500 / 0.400 / 0.375 | 0.429 / 0.375 / 0.375 / 0.000 | 0.476 / 0.429 / 0.308 / 0.000 | MISSED |
-| 3. Label share in `labels.csv` | every label 20%–35% | 25% each | 25% each | 25% each | MET |
-| 4. Staff agreement | ≥ 0.80 (24/30) | — | — | — | MET (26/30 = 86.7%) |
-| 5. Confident − unsure third accuracy | ≥ +0.15 every seed | +0.417 (0.583 − 0.167) | +0.250 (0.500 − 0.250) | −0.250 (0.250 − 0.500) | MISSED |
+| Criterion                            | Target                                                                         | Seed 42                       | Seed 7                        | Seed 2024                     | Verdict             |
+| ------------------------------------ | ------------------------------------------------------------------------------ | ----------------------------- | ----------------------------- | ----------------------------- | ------------------- |
+| 1. Overall accuracy                  | $\ge$ 0.60 every seed                                                          | 0.500                         | 0.333                         | 0.361                         | MISSED              |
+| 2. Per-label F1 floors               | analysis $\ge$ 0.60, reaction $\ge$ 0.50, hot_take $\ge$ 0.45, joke $\ge$ 0.40 | 0.667 / 0.500 / 0.400 / 0.375 | 0.429 / 0.375 / 0.375 / 0.000 | 0.476 / 0.429 / 0.308 / 0.000 | MISSED              |
+| 3. Label share in `labels.csv`       | every label 20%–35%                                                            | 25% each                      | 25% each                      | 25% each                      | MET                 |
+| 4. Staff agreement                   | $\ge$ 0.80 (24/30)                                                             | —                             | —                             | —                             | MET (26/30 = 86.7%) |
+| 5. Confident − unsure third accuracy | $\ge$ +0.15 every seed                                                         | +0.417 (0.583 − 0.167)        | +0.250 (0.500 − 0.250)        | −0.250 (0.250 − 0.500)        | MISSED              |
 
 Criterion 2 cells read analysis / reaction / hot_take / joke. Criteria 3
 and 4 are properties of the data, not of a seed, so they have one value.
 
 **Spread across seeds:**
 
-| Measure | Seed 42 | Seed 7 | Seed 2024 | Spread |
-|---|---|---|---|---|
-| Overall accuracy | 0.500 | 0.333 | 0.361 | 0.167 |
-| Macro F1 | 0.485 | 0.295 | 0.303 | 0.191 |
-| F1 — `analysis` | 0.667 | 0.429 | 0.476 | 0.238 |
-| F1 — `hot_take` | 0.400 | 0.375 | 0.308 | 0.092 |
-| F1 — `reaction` | 0.500 | 0.375 | 0.429 | 0.125 |
-| F1 — `joke` | 0.375 | 0.000 | 0.000 | 0.375 |
+| Measure          | Seed 42 | Seed 7 | Seed 2024 | Spread |
+| ---------------- | ------- | ------ | --------- | ------ |
+| Overall accuracy | 0.500   | 0.333  | 0.361     | 0.167  |
+| Macro F1         | 0.485   | 0.295  | 0.303     | 0.191  |
+| F1 — `analysis`  | 0.667   | 0.429  | 0.476     | 0.238  |
+| F1 — `hot_take`  | 0.400   | 0.375  | 0.308     | 0.092  |
+| F1 — `reaction`  | 0.500   | 0.375  | 0.429     | 0.125  |
+| F1 — `joke`      | 0.375   | 0.000  | 0.000     | 0.375  |
 
 Accuracy moved 16.7 points across seeds, past the 10-point line, so a single
 split is not a measurement here. Seed 42, the split my unit 5 result and the
@@ -270,20 +285,20 @@ baseline comparison used, was the friendliest of the three.
 Seed 42 (the notebook's section 7 output):
 
 | true \ predicted | analysis | hot_take | reaction | joke |
-|---|---|---|---|---|
-| **analysis** | 7 | 1 | 1 | 0 |
-| **hot_take** | 4 | 3 | 1 | 1 |
-| **reaction** | 0 | 1 | 5 | 3 |
-| **joke** | 1 | 1 | 4 | 3 |
+| ---------------- | -------- | -------- | -------- | ---- |
+| **analysis**     | 7        | 1        | 1        | 0    |
+| **hot_take**     | 4        | 3        | 1        | 1    |
+| **reaction**     | 0        | 1        | 5        | 3    |
+| **joke**         | 1        | 1        | 4        | 3    |
 
 Summed over all three seeds (108 test predictions):
 
 | true \ predicted | analysis | hot_take | reaction | joke |
-|---|---|---|---|---|
-| **analysis** | 15 | 9 | 3 | 0 |
-| **hot_take** | 6 | 11 | 9 | 1 |
-| **reaction** | 4 | 4 | 14 | 5 |
-| **joke** | 4 | 9 | 11 | 3 |
+| ---------------- | -------- | -------- | -------- | ---- |
+| **analysis**     | 15       | 9        | 3        | 0    |
+| **hot_take**     | 6        | 11       | 9        | 1    |
+| **reaction**     | 4        | 4        | 14       | 5    |
+| **joke**         | 4        | 9        | 11       | 3    |
 
 **My biggest off-diagonal number, and what it means:**
 On seed 42 the biggest cell is 4 real `hot_take` posts called `analysis`,
@@ -294,24 +309,22 @@ posts called `reaction`**, plus 9 more called `hot_take`. Only 3 of 27
 jokes were recognised. The model never learned `joke` as a category; it
 splits jokes between the two labels they look most like on the surface.
 
-
-
 ---
 
 ## Verdicts and Diagnoses
 
-| # | Criterion | Target | Verdict | How I decided |
-|---|---|---|---|---|
-| 1 | Overall accuracy | ≥ 0.60 on every seed | MISSED | No seed reached it: 0.500, 0.333, 0.361 |
-| 2 | Per-label F1 floors | analysis 0.60 / reaction 0.50 / hot_take 0.45 / joke 0.40, every seed | MISSED | `hot_take` and `joke` miss on all three seeds; `joke` is 0.000 on two |
-| 3 | Label balance | 20%–35% each | MET | 60 / 240 = 25.0% for every label |
-| 4 | Staff agreement | ≥ 0.80 | MET | 26 / 30 = 86.7% agreement on `data/staff_posts.csv` |
-| 5 | Confidence gap | ≥ +0.15 every seed | MISSED | Seeds 42 and 7 pass (+0.417, +0.250); seed 2024 is reversed (−0.250) |
+| #   | Criterion           | Target                                                                | Verdict | How I decided                                                         |
+| --- | ------------------- | --------------------------------------------------------------------- | ------- | --------------------------------------------------------------------- |
+| 1   | Overall accuracy    | $\ge$ 0.60 on every seed                                              | MISSED  | No seed reached it: 0.500, 0.333, 0.361                               |
+| 2   | Per-label F1 floors | analysis 0.60 / reaction 0.50 / hot_take 0.45 / joke 0.40, every seed | MISSED  | `hot_take` and `joke` miss on all three seeds; `joke` is 0.000 on two |
+| 3   | Label balance       | 20%–35% each                                                          | MET     | 60 / 240 = 25.0% for every label                                      |
+| 4   | Staff agreement     | $\ge$ 0.80                                                            | MET     | 26 / 30 = 86.7% agreement on `data/staff_posts.csv`                   |
+| 5   | Confidence gap      | $\ge$ +0.15 every seed                                                | MISSED  | Seeds 42 and 7 pass (+0.417, +0.250); seed 2024 is reversed (−0.250)  |
 
 **Diagnoses**
 
 - **Criterion 1 (Overall accuracy) & Criterion 2 (Floor on `joke`):**
-  *Cause: A genuinely hard label pair combined with severe underfitting.*
+  _Cause: A genuinely hard label pair combined with severe underfitting._
   How I know: In the 3-epoch run, `joke` collapsed to 0.000 F1 on seeds 7 and
   2024, with only 3 of 27 jokes correctly predicted across splits. The
   confusion matrix shows jokes leaking symmetrically into `reaction` (11) and
@@ -322,7 +335,7 @@ splits jokes between the two labels they look most like on the surface.
   to pull representations away from uniform prior weights.
 
 - **Criterion 2 (Floor on `hot_take`) & `analysis` leakage:**
-  *Cause: A boundary I applied inconsistently in my own labels.*
+  _Cause: A boundary I applied inconsistently in my own labels._
   How I know: Across the three seeds, 9 real `analysis` posts were mispredicted
   as `hot_take`. My agreement check provides direct evidence of why: on post
   `sp_005` (Pile a), I misclassified a controlled personal comparison as
@@ -333,15 +346,13 @@ splits jokes between the two labels they look most like on the surface.
   `hot_take`.
 
 - **Criterion 5 (Confidence gap reversed on Seed 2024):**
-  *Cause: Optimization stall producing near-uniform output probabilities.*
+  _Cause: Optimization stall producing near-uniform output probabilities._
   How I know: At 3 epochs, the model's winning confidence averaged 0.28 (where
   uniform random guessing is 0.25). When all predictions cluster in a narrow
   0.26–0.30 band, sorting predictions into thirds sorts noise, making seed-to-seed
   rank order unstable. When training epochs were doubled to 6 in Milestone 5,
   loss dropped to 1.19 and Criterion 5 was cleanly MET across all three seeds
   (+0.167, +0.250, +0.250).
-
-
 
 ---
 
@@ -352,26 +363,28 @@ splits jokes between the two labels they look most like on the surface.
 **Disagreements**
 
 **1.**
-> *The post:* "Carbon plates aren't the whole story. My times dropped 2% in the shoes and another 2% the following year in the same pair, when the only thing that changed was going from 35 to 50 miles a week."
+
+> _The post:_ "Carbon plates aren't the whole story. My times dropped 2% in the shoes and another 2% the following year in the same pair, when the only thing that changed was going from 35 to 50 miles a week."
 >
-> *Staff said / I said:* `analysis` / `hot_take`
+> _Staff said / I said:_ `analysis` / `hot_take`
 >
-> *My call, and why:* Staff is right. I was overly skeptical because the post
+> _My call, and why:_ Staff is right. I was overly skeptical because the post
 > opens like an assertive gear take and relies on an N=1 training log.
-> However, Rule 1 asks: *does the fact carry the argument?* The author isolates
+> However, Rule 1 asks: _does the fact carry the argument?_ The author isolates
 > shoe impact (2%) against increased mileage volume (2% in the same shoes) to
 > prove that mileage mattered as much as the shoes. The two percentages are
 > load-bearing to the conclusion, not decorative. I applied Rule 1 too loosely
 > by dismissing personal training data.
 >
-> *Which pile:* (a) the rule covered it and I applied it loosely
+> _Which pile:_ (a) the rule covered it and I applied it loosely
 
 **2.**
-> *The post:* "Three of us ran the same session on the same day, different shoes, within 10 seconds of each other over 5 miles. I'm not saying shoes do nothing, but whatever they do was smaller than the noise between three people."
+
+> _The post:_ "Three of us ran the same session on the same day, different shoes, within 10 seconds of each other over 5 miles. I'm not saying shoes do nothing, but whatever they do was smaller than the noise between three people."
 >
-> *Staff said / I said:* `analysis` / `hot_take`
+> _Staff said / I said:_ `analysis` / `hot_take`
 >
-> *My call, and why:* I think my call is defensible. Staff called this
+> _My call, and why:_ I think my call is defensible. Staff called this
 > `analysis` because the sample ("three of us", "within 10 seconds over 5 miles")
 > is a checkable observation that the writer's conclusion rests upon. However,
 > three different human runners possess differing baseline fitness and
@@ -381,30 +394,32 @@ splits jokes between the two labels they look most like on the surface.
 > Under Rule 1, the observation fails to bear the conclusion, making it an
 > unsupported hot take.
 >
-> *Which pile:* (c) the rule is ambiguous here and my reading is defensible
+> _Which pile:_ (c) the rule is ambiguous here and my reading is defensible
 
 **3.**
-> *The post:* "Nobody actually enjoys the long run. They enjoy having done it, which is a completely different thing, and the sport would be more honest if it said so."
+
+> _The post:_ "Nobody actually enjoys the long run. They enjoy having done it, which is a completely different thing, and the sport would be more honest if it said so."
 >
-> *Staff said / I said:* `hot_take` / `reaction`
+> _Staff said / I said:_ `hot_take` / `reaction`
 >
-> *My call, and why:* Staff is right. The comment felt like an emotional
+> _My call, and why:_ Staff is right. The comment felt like an emotional
 > personal confession about the grueling fatigue of long runs, leading me to
-> label it `reaction`. But Rule 2 is explicit: *is it about a claim or about
-> the writer?* "`reaction` reports what just happened to the writer and how it
+> label it `reaction`. But Rule 2 is explicit: _is it about a claim or about
+> the writer?_ "`reaction` reports what just happened to the writer and how it
 > felt. `hot_take` asserts something general about the world." The writer makes
 > a sweeping assertion about everyone in the sport ("Nobody actually enjoys the
 > long run"), not a report of their own run that morning. I let the reflective
 > tone override the rule's subject test.
 >
-> *Which pile:* (a) the rule covered it and I applied it loosely
+> _Which pile:_ (a) the rule covered it and I applied it loosely
 
 **4.**
-> *The post:* "Just realised the shoes I set every PB in this year are the ones I bought by accident in the wrong size."
+
+> _The post:_ "Just realised the shoes I set every PB in this year are the ones I bought by accident in the wrong size."
 >
-> *Staff said / I said:* `reaction` / `hot_take`
+> _Staff said / I said:_ `reaction` / `hot_take`
 >
-> *My call, and why:* This is a gap in the taxonomy. The comment is framed as
+> _My call, and why:_ This is a gap in the taxonomy. The comment is framed as
 > an immediate personal discovery ("Just realised..."), which fits `reaction`
 > under Rule 2. But in the context of a running forum, the communicative
 > purpose is an ironic, satirical commentary on gear obsession and shoe sizing
@@ -414,11 +429,12 @@ splits jokes between the two labels they look most like on the surface.
 > (`hot_take`). Staff favored the first-person framing; I favored the satirical
 > communicative payload.
 >
-> *Which pile:* (b) the rule genuinely doesn't say
+> _Which pile:_ (b) the rule genuinely doesn't say
 
 **What the pattern in my disagreements tells me:**
 The two Pile (a) disagreements reveal a consistent pattern in how I apply
 decision rules:
+
 1. On `analysis` vs `hot_take` (`sp_005`), I tend to dismiss personal data and
    self-experiments as "anecdotal hot takes" rather than checking whether the
    numbers do load-bearing argumentative work.
@@ -430,8 +446,6 @@ posts were predicted as `hot_take`, and 9 `joke`/`hot_take` posts were predicted
 as `reaction`. My own threshold for what counts as an argument was applied
 inconsistently in the 240 training examples, teaching the model blurry decision
 boundaries.
-
-
 
 ---
 
@@ -454,27 +468,28 @@ initialization.
 
 ### Run Log — After
 
-| Criterion | Target | Seed 42 | Seed 7 | Seed 2024 | Verdict |
-|---|---|---|---|---|---|
-| 1. Overall accuracy | ≥ 0.60 every seed | 0.528 | 0.444 | 0.472 | MISSED |
-| 2. Per-label F1 floors | analysis ≥ 0.60, reaction ≥ 0.50, hot_take ≥ 0.45, joke ≥ 0.40 | 0.609 / 0.526 / 0.462 / 0.471 | 0.533 / 0.500 / 0.364 / 0.421 | 0.609 / 0.333 / 0.476 / 0.375 | MISSED |
-| 3. Label share in `labels.csv` | every label 20%–35% | 25% each | 25% each | 25% each | MET |
-| 4. Staff agreement | ≥ 0.80 (24/30) | — | — | — | MET (26/30 = 86.7%) |
-| 5. Confident − unsure third accuracy | ≥ +0.15 every seed | +0.167 (0.667 − 0.500) | +0.250 (0.667 − 0.417) | +0.250 (0.583 − 0.333) | **MET** |
+| Criterion                            | Target                                                                         | Seed 42                       | Seed 7                        | Seed 2024                     | Verdict             |
+| ------------------------------------ | ------------------------------------------------------------------------------ | ----------------------------- | ----------------------------- | ----------------------------- | ------------------- |
+| 1. Overall accuracy                  | $\ge$ 0.60 every seed                                                          | 0.528                         | 0.444                         | 0.472                         | MISSED              |
+| 2. Per-label F1 floors               | analysis $\ge$ 0.60, reaction $\ge$ 0.50, hot_take $\ge$ 0.45, joke $\ge$ 0.40 | 0.609 / 0.526 / 0.462 / 0.471 | 0.533 / 0.500 / 0.364 / 0.421 | 0.609 / 0.333 / 0.476 / 0.375 | MISSED              |
+| 3. Label share in `labels.csv`       | every label 20%–35%                                                            | 25% each                      | 25% each                      | 25% each                      | MET                 |
+| 4. Staff agreement                   | $\ge$ 0.80 (24/30)                                                             | —                             | —                             | —                             | MET (26/30 = 86.7%) |
+| 5. Confident − unsure third accuracy | $\ge$ +0.15 every seed                                                         | +0.167 (0.667 − 0.500)        | +0.250 (0.667 − 0.417)        | +0.250 (0.583 − 0.333)        | **MET**             |
 
 **Spread across seeds (After):**
 
-| Measure | Seed 42 | Seed 7 | Seed 2024 | Spread |
-|---|---|---|---|---|
-| Overall accuracy | 0.528 | 0.444 | 0.472 | 0.083 |
-| Macro F1 | 0.517 | 0.455 | 0.448 | 0.068 |
-| F1 — `analysis` | 0.609 | 0.533 | 0.609 | 0.075 |
-| F1 — `hot_take` | 0.462 | 0.364 | 0.476 | 0.113 |
-| F1 — `reaction` | 0.526 | 0.500 | 0.333 | 0.193 |
-| F1 — `joke` | 0.471 | 0.421 | 0.375 | 0.096 |
+| Measure          | Seed 42 | Seed 7 | Seed 2024 | Spread |
+| ---------------- | ------- | ------ | --------- | ------ |
+| Overall accuracy | 0.528   | 0.444  | 0.472     | 0.083  |
+| Macro F1         | 0.517   | 0.455  | 0.448     | 0.068  |
+| F1 — `analysis`  | 0.609   | 0.533  | 0.609     | 0.075  |
+| F1 — `hot_take`  | 0.462   | 0.364  | 0.476     | 0.113  |
+| F1 — `reaction`  | 0.526   | 0.500  | 0.333     | 0.193  |
+| F1 — `joke`      | 0.471   | 0.421  | 0.375     | 0.096  |
 
 **Did it help, and how do I know:**
 Yes, it helped clearly, and the numbers show three specific improvements:
+
 1. **Spread was cut in half:** Overall accuracy spread dropped from 0.167
    (unstable, > 10 points) down to 0.083 (within the 0.05–0.10 stable range).
    Macro F1 spread dropped from 0.191 down to 0.068.
@@ -495,7 +510,7 @@ missing training examples or resolve genuine semantic ambiguity.
 
 ## What's Still Broken
 
-- **Criterion 1 (Overall accuracy ≥ 0.60):** Missed on all three seeds
+- **Criterion 1 (Overall accuracy $\ge$ 0.60):** Missed on all three seeds
   (0.528, 0.444, 0.472). The model still gets roughly 1 in 2 posts wrong on
   held-out splits. What I would do next is double the dataset size from 240
   to 500 rows, because 42 training examples per class is too few for
@@ -517,8 +532,6 @@ treating any number or player name as evidence for `analysis`. Because
 DistilBERT lacks domain-specific NBA background knowledge, it cannot discern
 whether a sarcastic comment carries a sincere underlying critique or is merely
 an absurd bit.
-
-
 
 <!-- ═════════════════════════════════════════════════════════════════════
 
